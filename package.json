@@ -1,0 +1,41 @@
+{
+    "name": "rwl",
+    "version": "0.1.0",
+    "description": "parse rwl text to JSON",
+    "main": "./dist/rwl.js",
+    "scripts": {
+        "pretest": "rm -rf dist && mkdir dist && rollup -c -- src/index.js > dist/rwl.js",
+        "test": "tape 'tests/**/*-test.js'",
+        "prepublishOnly": "npm run test"
+    },
+    "keywords": [
+        "rwl",
+        "tucson",
+        "dendrochronology",
+        "JSON"
+    ],
+    "author": {
+        "name": "Russ Biggs",
+        "url": "https://russbiggs.com"
+    },
+    "homepage": "https://github.com/russbiggs/rwl",
+    "license": "ISC",
+    "bin": {
+        "rwl2json": "./bin/rwl2json"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/russbiggs/rwl.git"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-plugin-external-helpers": "^6.22.0",
+        "babel-preset-env": "^1.6.1",
+        "rollup": "^0.57.1",
+        "rollup-plugin-babel": "^3.0.3",
+        "tape": "^4.9.0"
+    },
+    "dependencies": {
+        "commander": "^2.15.1"
+    }
+}
