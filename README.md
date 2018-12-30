@@ -29,6 +29,19 @@ Pipe output to a file or another program
 rwl2json example.rwl > example.json
 ```
 
+### In the browser 
+
+#### as an ES6 Module
+```js
+import rwl from 'rwl';
+```
+
+#### from a script tag
+```html
+<script src="path/to/dist/rwl-iife.min.js"/>
+```
+
+
 ### In node
 
 ```js

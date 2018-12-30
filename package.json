@@ -40,11 +40,11 @@
         "istanbul": "^0.4.5",
         "rewire": "^4.0.1",
         "rollup": "^0.57.1",
-        "tape": "^4.9.0"
+        "tape": "^4.9.0",
+        "uglify-es": "^3.3.9"
     },
     "dependencies": {
         "commander": "^2.19.0",
-        "randomatic": "^3.1.1",
-        "uglify-es": "^3.3.9"
+        "randomatic": "^3.1.1"
     }
 }
