@@ -1,11 +1,17 @@
 {
     "name": "rwl",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "parse rwl text to JSON",
-    "main": "./dist/rwl.js",
+    "main": "./dist/rwl-cjs.js",
+    "module": "./dist/rwl.mjs",
     "scripts": {
-        "pretest": "rm -rf dist && mkdir dist && rollup -c -- src/index.js > dist/rwl.js",
-        "test": "tape 'tests/**/*-test.js'",
+        "build": "rm -rf dist/* && rollup -c && npm run compress-iife && npm run create-compat && npm run compress-amd",
+        "compress-iife": "uglifyjs --compress --mangle -o dist/rwl-iife.min.js dist/rwl-iife.js",
+        "create-compat": "babel dist/rwl-iife.js | uglifyjs --compress --mangle > dist/rwl-iife-compat.min.js",
+        "compress-amd": "uglifyjs --compress --mangle -o dist/rwl-amd.min.js dist/rwl-amd.js",
+        "pretest": "npm run build",
+        "test": "tape 'test/*-test.js'",
+        "coverage": "istanbul cover tape ./test/*-test.js",
         "prepublishOnly": "npm run test"
     },
     "keywords": [
@@ -31,11 +37,13 @@
         "babel-cli": "^6.26.0",
         "babel-plugin-external-helpers": "^6.22.0",
         "babel-preset-env": "^1.6.1",
+        "istanbul": "^0.4.5",
+        "rewire": "^4.0.1",
         "rollup": "^0.57.1",
-        "rollup-plugin-babel": "^3.0.3",
         "tape": "^4.9.0"
     },
     "dependencies": {
-        "commander": "^2.15.1"
+        "commander": "^2.19.0",
+        "uglify-es": "^3.3.9"
     }
 }

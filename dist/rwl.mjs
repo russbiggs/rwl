@@ -1,4 +1,4 @@
-export default function parse(rwlText) {
+function parse(rwlText) {
     const output = {};
     const metadataRows = rwlText.split('\n').slice(0, 3);
     output['metadata'] = parseMetadata(metadataRows);
@@ -16,8 +16,8 @@ function parseMeasurements(measurementRows) {
         obj['sampleId'] = splitRow[0];
         const measurements = splitRow.slice(1);
         const startYear = parseInt(measurements.shift());
-        const measurementSet = []
-        for (let i=0; i<measurements.length; i++) {
+        const measurementSet = [];
+        for (let i=0; i< measurements.length; i++) {
             const measureObj = {};
             measureObj['year'] = startYear + i;
             measureObj['width'] = parseInt(measurements[i]);
@@ -32,9 +32,9 @@ function parseMeasurements(measurementRows) {
         return obj
     }, {});
 
-    const samples = []
+    const samples = [];
     for (const sample in sampleObjs) {
-        samples.push({ sampleId: sample, measurements: sampleObjs[sample] })
+        samples.push({ sampleId: sample, measurements: sampleObjs[sample] });
     }
     return samples;
 }
@@ -78,3 +78,5 @@ function parseCoord(value) {
     let coord = parseInt(degrees) + (parseFloat(minutes) * 0.01);
     return parseFloat(coord.toFixed(2));
 }
+
+export default parse;
