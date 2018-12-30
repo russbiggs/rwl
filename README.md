@@ -38,9 +38,8 @@ import rwl from 'rwl';
 
 #### from a script tag
 ```html
-<script src="path/to/dist/rwl-iife.min.js"/>
+<script src="path/to/dist/rwl-iife.min.js"></script>
 ```
-
 
 ### In node
 
