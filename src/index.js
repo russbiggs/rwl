@@ -17,7 +17,7 @@ function parseMeasurements(measurementRows) {
         const measurements = splitRow.slice(1);
         const startYear = parseInt(measurements.shift());
         const measurementSet = []
-        for (let i=0; i< measurements.length; i++) {
+        for (let i=0; i<measurements.length; i++) {
             const measureObj = {};
             measureObj['year'] = startYear + i;
             measureObj['width'] = parseInt(measurements[i]);
