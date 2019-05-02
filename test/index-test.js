@@ -1,14 +1,14 @@
 const fs = require('fs');
 const rwl = require('../');
 const rewire = require('rewire');
-const test = require('tape');
+const tape = require('tape');
 
 const userRewire = rewire('../')
 const parseMeasurements = userRewire.__get__('parseMeasurements')
 const parseMetadata = userRewire.__get__('parseMetadata')
 const parseCoord = userRewire.__get__('parseCoord')
 
-test("test parseMeasurements", (test) => {
+tape("test parseMeasurements", (test) => {
     const rawMeasurements = `GPM01A  1880    50   286   183   252   331   279    63   336   423   419
 GPM01A  1890   320  1019   365   395   380   858   704   793   861   441`;
     const measurements = parseMeasurements(rawMeasurements.split('\n'));
@@ -17,24 +17,34 @@ GPM01A  1890   320  1019   365   395   380   858   704   793   861   441`;
     test.end();
 });
 
-test("test parseMetadata", (test) => {
-    const rawMetadata = `GPM    1 Guadalupe Peak                                      PSME               
-GPM    2 Texas        Douglas-fir       2417M  3154-10450    __    1880 2008    
-GPM    3 Daniel Griffin   Russ Biggs                                            `;
+function testParseMetadata(name) {
+    tape(`parseMetadata ${name}`, function(test) {
+        fs.readFile(`test/${name}.rwl`, "utf8", (err, data)=> {
+            const metadataRows = data.split('\n').slice(0,3);
+            const metadata = parseMetadata(metadataRows);
+            test.deepEqual(metadata, JSON.parse(fs.readFileSync("test/" + name + ".json", "utf8")), test.end());
+        })
+    });
+}
 
-    const metadata = parseMetadata(rawMetadata.split('\n'));
-    const expected = {"siteId":"GPM","siteName":"Guadalupe Peak","speciesCode":"PSME","state":"Texas","species":"Douglas-fir","elevation":"2417","location":{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[104.5,31.54]}},"firstYear":1880,"lastYear":2008,"leadInvestigator":"Daniel Griffin"};
-    test.deepEqual(metadata, expected)
-    test.end();
-});
+testParseMetadata('mexi077');
+testParseMetadata('nm617');
+testParseMetadata('turk020');
+testParseMetadata('ak162');
 
-test("test parseCoord", (test) => {
-    const lat = parseCoord('3154');
-    test.equal(lat, 31.54);
-    test.end();
-})
+function testParseCoord(value, expected) {
+    tape("test parseCoord", (test) => {
+        const coord = parseCoord(value);
+        test.equal(coord, expected);
+        test.end();
+    })
+}
 
-test("test parse function", (test) => {
+testParseCoord("3154", 31.54)
+testParseCoord("17999", 179.99)
+testParseCoord("0000", 0)
+
+tape("test parse function", (test) => {
     let testRwl = fs.readFileSync("test/tx056.rwl", "utf8");
     let actual = rwl(testRwl);
     let expected = fs.readFileSync("test/tx056.json", "utf8");

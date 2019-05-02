@@ -46,13 +46,19 @@ function parseMetadata(metadataRows) {
     const row1Matches = rows[0].slice(9).match(/(\w+)/g);
     metadata['siteName'] = row1Matches.slice(0, -1).join(' ');
     metadata['speciesCode'] = row1Matches.slice(-1)[0];
-    const row2Matches = rows[1].slice(9).match(/([\w\-]+)/g);
-    metadata['state'] = row2Matches[0];
-    metadata['species'] = row2Matches[1];
-    const elevation = row2Matches[2];
+    const stateSplit = rows[1].split(/\s{2,}/)
+    metadata['state'] = stateSplit[1].match(/2\s([A-Za-z\s]+)/)[1]
+    metadata['species'] = rows[1].match(/\d+[A-Za-z\s]+\s\s+([A-Za-z\s\-\']+)\b\s\s+\d/)[1]
+    const elevation = rows[1].match(/\d+M/)[0];
     const elevationValue = elevation.match(/\d+/);
     metadata['elevation'] = elevationValue[0];
-    const latLng = row2Matches[3].split('-');
+    let latLng = rows[1].match(/\s(\d+\-*\s*\d+)\s/)[1]
+    if (latLng.indexOf(' ') > -1) {
+        latLng = latLng.split(/\s+/)
+    }
+    if (latLng.indexOf('-') > -1) {
+        latLng = latLng.split('-')
+    }
     const lat = parseCoord(latLng[1]);
     const lng = parseCoord(latLng[0]);
     metadata['location'] = {
@@ -63,13 +69,18 @@ function parseMetadata(metadataRows) {
             "coordinates": [lat, lng]
         }
     };
-    const firstYear = row2Matches[5];
+    const [firstYear, lastYear] = rows[1].match(/(\d{4})\s*(\d{4})\s*$/).slice(1);
     metadata['firstYear'] = parseInt(firstYear);
-    let lastYear = row2Matches[6];
     metadata['lastYear'] = parseInt(lastYear);
-    let row3Matches = rows[2].slice(9).match(/\w+/g);
-    metadata['leadInvestigator'] = row3Matches.slice(0, 2).join(' ');
+    metadata['leadInvestigator'] = parseNames(rows[2])[0]
     return metadata
+}
+
+
+function parseNames(row) {
+    const nameMatch = row.match(/\w+\s+3\s(.*)/)[1];
+    const names = nameMatch.split(/(\s\band\b\s)|\s{2,}|\,\s+/).filter((elem)=> {if (elem) { return true } return false });
+    return names
 }
 
 function parseCoord(value) {
