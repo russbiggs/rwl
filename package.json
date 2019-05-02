@@ -1,6 +1,6 @@
 {
     "name": "rwl",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "parse rwl text to JSON",
     "main": "./dist/rwl-cjs.js",
     "module": "./dist/rwl.mjs",
@@ -44,7 +44,8 @@
         "uglify-es": "^3.3.9"
     },
     "dependencies": {
-        "commander": "^2.19.0",
+        "commander": "^2.20.0",
+        "lodash": "^4.17.11",
         "randomatic": "^3.1.1"
     }
 }
