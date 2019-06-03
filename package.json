@@ -1,6 +1,6 @@
 {
     "name": "rwl",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "parse rwl text to JSON",
     "main": "./dist/rwl-cjs.js",
     "module": "./dist/rwl.mjs",

@@ -23,7 +23,11 @@ define(function () { 'use strict';
                 const measureObj = {};
                 measureObj['year'] = startYear + i;
                 measureObj['width'] = parseInt(measurements[i]);
-                measurementSet.push(measureObj);
+                const stopValues = [999, -9999];
+                console.log(stopValues.indexOf(measureObj['width']));
+                if (stopValues.indexOf(measureObj['width']) == -1) {
+                    measurementSet.push(measureObj);
+                }   
             }
             obj['measurements'] = measurementSet;
             series.push(obj);
@@ -33,7 +37,6 @@ define(function () { 'use strict';
             obj[item.sampleId].push(...item.measurements);
             return obj
         }, {});
-
         const samples = [];
         for (const sample in sampleObjs) {
             samples.push({ sampleId: sample, measurements: sampleObjs[sample] });
@@ -51,9 +54,8 @@ define(function () { 'use strict';
         const stateSplit = rows[1].split(/\s{2,}/);
         metadata['state'] = stateSplit[1].match(/2\s([A-Za-z\s]+)/)[1];
         metadata['species'] = rows[1].match(/\d+[A-Za-z\s]+\s\s+([A-Za-z\s\-\']+)\b\s\s+\d/)[1];
-        const elevation = rows[1].match(/\d+M/)[0];
-        const elevationValue = elevation.match(/\d+/);
-        metadata['elevation'] = elevationValue[0];
+        const elevation = rows[1].match(/(\d+)M/)[1];
+        metadata['elevation'] = elevation;
         let latLng = rows[1].match(/\s(\d+\-*\s*\d+)\s/)[1];
         if (latLng.indexOf(' ') > -1) {
             latLng = latLng.split(/\s+/);

@@ -35,7 +35,7 @@ testParseMetadata('ak162');
 function testParseCoord(value, expected) {
     tape("test parseCoord", (test) => {
         const coord = parseCoord(value);
-        test.equal(coord, expected);
+        test.deepEqual(coord, expected);
         test.end();
     })
 }
