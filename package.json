@@ -1,23 +1,25 @@
 {
     "name": "rwl",
-    "version": "1.2.2",
-    "description": "parse rwl text to JSON",
-    "main": "./dist/rwl-cjs.js",
-    "module": "./dist/rwl.mjs",
+    "version": "2.0.0",
+    "description": "read Tucson rwl files in JavaScript",
+    "jsnext:main": "dist/rwl.es.js",
+    "source": "src/index.js",
+    "module": "dist/rwl.es.js",
+    "esmodules": "dist/rwl.modern.js",
+    "main": "dist/rwl.js",
+    "umd:main": "dist/rwl.umd.js",
+    "type": "module",
     "scripts": {
-        "build": "rm -rf dist/* && rollup -c && npm run compress-iife && npm run create-compat && npm run compress-amd",
-        "compress-iife": "uglifyjs --compress --mangle -o dist/rwl-iife.min.js dist/rwl-iife.js",
-        "create-compat": "babel dist/rwl-iife.js | uglifyjs --compress --mangle > dist/rwl-iife-compat.min.js",
-        "compress-amd": "uglifyjs --compress --mangle -o dist/rwl-amd.min.js dist/rwl-amd.js",
+        "build": "microbundle",
         "pretest": "npm run build",
-        "test": "tape 'test/*-test.js'",
-        "coverage": "istanbul cover tape ./test/*-test.js",
+        "test": "jest",
         "prepublishOnly": "npm run test"
     },
     "keywords": [
         "rwl",
         "tucson",
         "dendrochronology",
+        "tree rings",
         "JSON"
     ],
     "author": {
@@ -26,26 +28,10 @@
     },
     "homepage": "https://github.com/russbiggs/rwl",
     "license": "ISC",
-    "bin": {
-        "rwl2json": "./bin/rwl2json"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/russbiggs/rwl.git"
-    },
+    "repository": "https://github.com/russbiggs/rwl.git",
     "devDependencies": {
-        "babel-cli": "^6.26.0",
-        "babel-plugin-external-helpers": "^6.22.0",
-        "babel-preset-env": "^1.6.1",
-        "istanbul": "^0.4.5",
-        "rewire": "^4.0.1",
-        "rollup": "^0.57.1",
-        "tape": "^4.9.0",
-        "uglify-es": "^3.3.9"
-    },
-    "dependencies": {
-        "commander": "^2.20.0",
-        "lodash": "^4.17.11",
-        "randomatic": "^3.1.1"
+        "jest": "^26.6.3",
+        "microbundle": "^0.13.0",
+        "prettier": "^2.2.1"
     }
 }
